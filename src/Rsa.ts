@@ -75,7 +75,37 @@ export class Rsa {
     const m = new BigInteger(this.encPad(buffer));
     const c = m.modPowInt(this.eHex, this.nHex);
 
-    return (c as any).toBuffer(this.cache.keyByteLength);
+    return this.toBuffer(c);
+  }
+
+  private toBuffer(data: BigInteger) {
+    let res = Buffer.from(data.toByteArray());
+    const trimOrSize = this.cache.keyByteLength as any;
+
+    if (trimOrSize === true && res[0] === 0) {
+      return res.slice(1);
+    }
+    if (!isNumber(trimOrSize)) {
+      return res;
+    }
+
+    if (res.length > trimOrSize) {
+      for (let i = 0; i < res.length - trimOrSize; i++) {
+        if (res[i] !== 0) {
+          return null;
+        }
+      }
+      return res.slice(res.length - trimOrSize);
+    }
+
+    if (res.length < trimOrSize) {
+      let padded = Buffer.alloc(trimOrSize);
+      padded.fill(0, 0, trimOrSize - res.length);
+      res.copy(padded, trimOrSize - res.length);
+      return padded;
+    }
+
+    return res;
   }
 
   private encPad(buffer: Buffer) {
