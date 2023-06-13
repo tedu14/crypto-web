@@ -1,0 +1,35 @@
+{
+  "name": "crypto-web",
+  "version": "1.0.0",
+  "author": "Thalison Eduardo <thalison.eduardo14@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "prebuild": "npx rimraf -rf lib",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "asn1": "^0.2.6",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "jsbn": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/asn1": "^0.2.0",
+    "@types/jsbn": "^1.2.30",
+    "vite": "^4.3.9",
+    "vite-plugin-dts": "^2.3.0"
+  }
+}
